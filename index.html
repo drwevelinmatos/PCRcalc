@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>APGAR</title>
+  <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Gotham Book', 'Comfortaa', Arial, sans-serif;
+      padding: 20px;
+      background: rgb(255,255,255);
+      color: #2c3e50;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    header img { max-width: 90px; }
+
+    h1 {
+      color: rgb(40,90,129);
+      font-family: 'Comfortaa', Arial, sans-serif;
+      margin: 0;
+      text-align: center;
+    }
+    .titulo-principal { font-size: 2em; margin-bottom: 2px; }
+    .subtitulo { font-size: 1em; font-weight: normal; margin-top: -5px; }
+
+    h2, h3 {
+      color: rgb(40,90,129);
+      font-family: 'Comfortaa', Arial, sans-serif;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+      color: rgb(40,90,129);
+    }
+
+    input, select {
+      padding: 8px; width: 100%; margin-top: 5px;
+      border-radius: 4px; border: 1px solid #ccc;
+      background: rgb(185,224,229);
+      color: #2c3e50;
+    }
+
+    /* Botões */
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      background: rgb(40,90,129);
+      color: white;
+      font-size: 16px;
+      font-family: 'Comfortaa', Arial, sans-serif;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(40,90,129,0.1);
+    }
+    button:hover { background: rgb(185,224,229); color: rgb(40,90,129); }
+
+    /* Timer Centralizado */
+    #timer {
+      display: block;
+      font-size: 2.2em;
+      text-align: center;
+      margin: 15px auto;
+      padding: 15px 25px;
+      background: rgb(85,85,85);
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      width: fit-content;
+      min-width: 120px;
+      box-shadow: 0 2px 6px rgba(85,85,85,0.3);
+    }
+
+    /* Tabela APGAR */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th {
+      text-align: center;
+      background: rgb(185,224,229);
+      padding: 8px;
+      border-radius: 4px;
+    }
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    td:first-child {
+      text-align: left;
+      font-weight: bold;
+      color: rgb(40,90,129);
+    }
+    td input {
+      display: block;
+      margin: auto;
+    }
+
+    .resultado, .result {
+      margin-top: 20px;
+      padding: 12px;
+      background: #fff;
+      border-radius: 7px;
+      border: 1px solid #ccc;
+    }
+    .destaque {
+      font-weight: bold;
+      color: rgb(40,90,129);
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 12px;
+      text-align: center;
+      color: #555;
+      border-top: 1px solid #ccc;
+      padding-top: 15px;
+      font-family: 'Comfortaa', Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="IMG_4625.png" alt="Logo Dr. Wevelin Matos" />
+</header>
+
+  <h1 class="titulo-principal">APGAR</h1>
+  <h1 class="subtitulo">Dr. Wevelin Matos</h1>
+
+  <!-- Score APGAR -->
+  <div class="secao" id="apgar">
+    <h2>Score Apgar</h2>
+    <button id="start-timer">Iniciar Cronômetro</button>
+    <span id="timer">00:00</span>
+    <button id="stop-timer">Finalizar Cronômetro</button>
+
+    <form id="apgar-form">
+      <table>
+        <tr><th>Categorias</th><th>0</th><th>1</th><th>2</th></tr>
+        <tr>
+          <td>Frequência cardíaca</td>
+          <td><input type="radio" name="fc" value="0"></td>
+          <td><input type="radio" name="fc" value="1"></td>
+          <td><input type="radio" name="fc" value="2"></td>
+        </tr>
+        <tr>
+          <td>Respiração</td>
+          <td><input type="radio" name="resp" value="0"></td>
+          <td><input type="radio" name="resp" value="1"></td>
+          <td><input type="radio" name="resp" value="2"></td>
+        </tr>
+        <tr>
+          <td>Tônus muscular</td>
+          <td><input type="radio" name="tonus" value="0"></td>
+          <td><input type="radio" name="tonus" value="1"></td>
+          <td><input type="radio" name="tonus" value="2"></td>
+        </tr>
+        <tr>
+          <td>Reflexo</td>
+          <td><input type="radio" name="reflexo" value="0"></td>
+          <td><input type="radio" name="reflexo" value="1"></td>
+          <td><input type="radio" name="reflexo" value="2"></td>
+        </tr>
+        <tr>
+          <td>Coloração</td>
+          <td><input type="radio" name="cor" value="0"></td>
+          <td><input type="radio" name="cor" value="1"></td>
+          <td><input type="radio" name="cor" value="2"></td>
+        </tr>
+      </table>
+    </form>
+    <button id="save-apgar">Salvar Avaliação</button>
+    <div id="apgar-history"></div>
+  </div>
+
+  <!-- Bibliografia -->
+  <div class="secao" id="bibliografia">
+    <h2>Bibliografia</h2>
+    <ul>
+      <li id="biblio-apgar">Apgar V. A proposal for a new method of evaluation of the newborn infant. Curr Res Anesth Analg. 1953.</li>
+    </ul>
+  </div>
+  
+<footer>
+  <p><strong>Dr. Wevelin Matos</strong> | Pediatria e Cardiologia Pediátrica</p>
+  <p>CRM/SP 196372 | (16) 99783-2383 | @dr.wevelinmatos</p>
+  <p>Ribeirão Preto - SP</p>
+</footer>
+  
+  <script>
+/* CRONÔMETRO APGAR */
+let timer, time = 0, apgarResults = [];
+document.getElementById('start-timer').onclick = function() {
+  clearInterval(timer);
+  time = 0;
+  document.getElementById('timer').textContent = '00:00';
+  timer = setInterval(() => {
+    time++;
+    let min = ('0'+Math.floor(time/60)).slice(-2), sec = ('0'+(time%60)).slice(-2);
+    document.getElementById('timer').textContent = min+':'+sec;
+    if([60,300,420,600].includes(time)) saveApgar(time/60);
+  },1000);
+};
+document.getElementById('stop-timer').onclick = function() {
+  clearInterval(timer);
+};
+
+function saveApgar(min) {
+  const fd = new FormData(document.getElementById('apgar-form'));
+  let total = 0;
+  ['fc','resp','tonus','reflexo','cor'].forEach(name=>{
+    total += +fd.get(name)||0;
+  });
+  apgarResults.push({min, total});
+  showApgarHistory();
+}
+document.getElementById('save-apgar').onclick = function() {
+  let min = Math.floor(time/60);
+  saveApgar(min);
+};
+function showApgarHistory() {
+  let html = '<b>Histórico Apgar:</b><ul>';
+  apgarResults.forEach(r=>{ html += `<li>${r.min} min: ${r.total}</li>`; });
+  html += '</ul>';
+  document.getElementById('apgar-history').innerHTML = html;
+};
+  </script>
+</body>
+</html>
