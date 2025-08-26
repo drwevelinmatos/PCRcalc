@@ -1,240 +1,559 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>APGAR</title>
-  <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700&display=swap" rel="stylesheet"/>
-  <style>
-    body {
-      font-family: 'Gotham Book', 'Comfortaa', Arial, sans-serif;
-      padding: 20px;
-      background: rgb(255,255,255);
-      color: #2c3e50;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    header img { max-width: 90px; }
-
-    h1 {
-      color: rgb(40,90,129);
-      font-family: 'Comfortaa', Arial, sans-serif;
-      margin: 0;
-      text-align: center;
-    }
-    .titulo-principal { font-size: 2em; margin-bottom: 2px; }
-    .subtitulo { font-size: 1em; font-weight: normal; margin-top: -5px; }
-
-    h2, h3 {
-      color: rgb(40,90,129);
-      font-family: 'Comfortaa', Arial, sans-serif;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 15px;
-      color: rgb(40,90,129);
-    }
-
-    input, select {
-      padding: 8px; width: 100%; margin-top: 5px;
-      border-radius: 4px; border: 1px solid #ccc;
-      background: rgb(185,224,229);
-      color: #2c3e50;
-    }
-
-    /* Botões */
-    button {
-      margin-top: 20px;
+<meta charset="UTF-8" />
+<title>Medicamentos Pediátricos Emergência - Calculadora</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f7fafc;
+    color: #163d55;
+    padding: 20px;
+    margin: 0;
+  }
+  h1, h2 {
+    color: #3777b5;
+    margin: 0 0 15px 0;
+  }
+  .section {
+    background: #eaf4fc;
+    padding: 16px 24px 24px 24px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    border: 1.5px solid #b4e0f0;
+    box-sizing: border-box;
+    width: 100%;
+    /* max width removed so full width */
+  }
+  label {
+    font-weight: bold;
+    margin-top: 12px;
+    display: block;
+  }
+  input[type=number] {
+    margin-top: 4px;
+    padding: 6px;
+    width: 110px;
+    border-radius: 5px;
+    border: 1px solid #b4e0f0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    margin-top: 7px;
+    table-layout: fixed;
+  }
+  th, td {
+    border: 1px solid #b4e0f0;
+    padding: 7px;
+    vertical-align: top;
+    word-wrap: break-word;
+  }
+  th {
+    background: #3777b5;
+    color: #fff;
+    text-align: left;
+  }
+  /* Make the "Prescrição Completa" column wider */
+  thead th:nth-child(4),
+  tbody td:nth-child(4) {
+    width: 45%;
+    /* Adjust width as needed */
+  }
+  tr.highlight td {
+    background: #ffe089;
+    font-weight: bold;
+  }
+  .info {
+    margin-top: 5px;
+    color: #376495;
+    font-style: italic;
+    font-size: .95em;
+  }
+  /* PCR Block Buttons and timers */
+  fieldset {
+    background: #eaf4fc !important;
+    border-radius: 10px;
+    border: 2px solid #b4e0f0;
+    margin-bottom: 30px;
+    padding: 15px 20px 25px 20px;
+  }
+  legend {
+    font-weight: bold;
+    color: #3777b5;
+    font-size: 1.25em;
+  }
+  fieldset > div {
+    margin: 10px 0;
+    text-align: center;
+  }
+  fieldset button {
+    font-size: 1.1em;
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #3777b5;
+    color: white;
+    border: none;
+    margin: 8px 12px;
+    min-width: 160px;
+    transition: background-color 0.3s ease;
+  }
+  fieldset button:hover {
+    background-color: #275a8b;
+  }
+  .timer, .timer2 {
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1.5em;
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: inline-block;
+    min-width: 90px;
+    margin-left: 12px;
+  }
+  .timer {
+    background: #3777b5;
+    color: #fff;
+  }
+  .timer2 {
+    background: #a8dadc;
+    color: #163d55;
+  }
+  .resultado {
+    margin-top: 10px;
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid #b4e0f0;
+    font-size: 1em;
+    min-height: 40px;
+  }
+  .table-log {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  .table-log th,
+  .table-log td {
+    border: 1px solid #b4e0f0;
+    padding: 5px;
+    text-align: center;
+  }
+  @media (max-width: 700px) {
+    .section {
       padding: 12px;
-      width: 100%;
-      background: rgb(40,90,129);
-      color: white;
-      font-size: 16px;
-      font-family: 'Comfortaa', Arial, sans-serif;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(40,90,129,0.1);
     }
-    button:hover { background: rgb(185,224,229); color: rgb(40,90,129); }
-
-    /* Timer Centralizado */
-    #timer {
-      display: block;
-      font-size: 2.2em;
-      text-align: center;
-      margin: 15px auto;
-      padding: 15px 25px;
-      background: rgb(85,85,85);
-      color: white;
-      font-weight: bold;
-      border-radius: 8px;
-      width: fit-content;
-      min-width: 120px;
-      box-shadow: 0 2px 6px rgba(85,85,85,0.3);
-    }
-
-    /* Tabela APGAR */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    th {
-      text-align: center;
-      background: rgb(185,224,229);
-      padding: 8px;
-      border-radius: 4px;
-    }
+    th,
     td {
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
+      font-size: 0.85em;
     }
-    td:first-child {
-      text-align: left;
-      font-weight: bold;
-      color: rgb(40,90,129);
+    fieldset button {
+      min-width: 120px;
+      padding: 10px 18px;
+      font-size: 1em;
+      margin: 6px 8px;
     }
-    td input {
-      display: block;
-      margin: auto;
+    .timer,
+    .timer2 {
+      font-size: 1.2em;
+      min-width: 70px;
+      padding: 8px 15px;
     }
-
-    .resultado, .result {
-      margin-top: 20px;
-      padding: 12px;
-      background: #fff;
-      border-radius: 7px;
-      border: 1px solid #ccc;
-    }
-    .destaque {
-      font-weight: bold;
-      color: rgb(40,90,129);
-    }
-
-    footer {
-      margin-top: 30px;
-      font-size: 12px;
-      text-align: center;
-      color: #555;
-      border-top: 1px solid #ccc;
-      padding-top: 15px;
-      font-family: 'Comfortaa', Arial, sans-serif;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
 
-<header>
-  <img src="IMG_4625.png" alt="Logo Dr. Wevelin Matos" />
-</header>
+<h1>Emergência Pediátrica - Calculadora de Doses</h1>
 
-  <h1 class="titulo-principal">APGAR</h1>
-  <h1 class="subtitulo">Dr. Wevelin Matos</h1>
+<label for="inputIdade">Idade (anos):</label>
+<input type="number" id="inputIdade" min="0" max="18" step="1" oninput="atualizaTabelas()">
+<label for="inputPeso">Peso (kg):</label>
+<input type="number" id="inputPeso" min="0" step="0.1" placeholder="Preferencialmente informar peso" oninput="atualizaTabelas()">
+<div id="msgPeso" class="info"></div>
 
-  <!-- Score APGAR -->
-  <div class="secao" id="apgar">
-    <h2>Score Apgar</h2>
-    <button id="start-timer">Iniciar Cronômetro</button>
-    <span id="timer">00:00</span>
-    <button id="stop-timer">Finalizar Cronômetro</button>
-
-    <form id="apgar-form">
-      <table>
-        <tr><th>Categorias</th><th>0</th><th>1</th><th>2</th></tr>
-        <tr>
-          <td>Frequência cardíaca</td>
-          <td><input type="radio" name="fc" value="0"></td>
-          <td><input type="radio" name="fc" value="1"></td>
-          <td><input type="radio" name="fc" value="2"></td>
-        </tr>
-        <tr>
-          <td>Respiração</td>
-          <td><input type="radio" name="resp" value="0"></td>
-          <td><input type="radio" name="resp" value="1"></td>
-          <td><input type="radio" name="resp" value="2"></td>
-        </tr>
-        <tr>
-          <td>Tônus muscular</td>
-          <td><input type="radio" name="tonus" value="0"></td>
-          <td><input type="radio" name="tonus" value="1"></td>
-          <td><input type="radio" name="tonus" value="2"></td>
-        </tr>
-        <tr>
-          <td>Reflexo</td>
-          <td><input type="radio" name="reflexo" value="0"></td>
-          <td><input type="radio" name="reflexo" value="1"></td>
-          <td><input type="radio" name="reflexo" value="2"></td>
-        </tr>
-        <tr>
-          <td>Coloração</td>
-          <td><input type="radio" name="cor" value="0"></td>
-          <td><input type="radio" name="cor" value="1"></td>
-          <td><input type="radio" name="cor" value="2"></td>
-        </tr>
-      </table>
-    </form>
-    <button id="save-apgar">Salvar Avaliação</button>
-    <div id="apgar-history"></div>
+<!-- Bloco PCR -->
+<fieldset>
+  <legend>Parada Cardiorrespiratória (PCR) - Cronômetros & Doses</legend>
+  <div>
+    <button type="button" onclick="togglePcrTimer()">Start/Stop PCR</button>
+    <span class="timer" id="pcrTimer">00:00</span>
   </div>
-
-  <!-- Bibliografia -->
-  <div class="secao" id="bibliografia">
-    <h2>Bibliografia</h2>
-    <ul>
-      <li id="biblio-apgar">Apgar V. A proposal for a new method of evaluation of the newborn infant. Curr Res Anesth Analg. 1953.</li>
-    </ul>
+  <div>
+    <button type="button" onclick="startMassageCycle()">Start Novo Ciclo Massagem</button>
+    <span class="timer2" id="currentMassageTimer">--:--</span>
   </div>
-  
-<footer>
-  <p><strong>Dr. Wevelin Matos</strong> | Pediatria e Cardiologia Pediátrica</p>
-  <p>CRM/SP 196372 | (16) 99783-2383 | @dr.wevelinmatos</p>
-  <p>Ribeirão Preto - SP</p>
-</footer>
-  
-  <script>
-/* CRONÔMETRO APGAR */
-let timer, time = 0, apgarResults = [];
-document.getElementById('start-timer').onclick = function() {
-  clearInterval(timer);
-  time = 0;
-  document.getElementById('timer').textContent = '00:00';
-  timer = setInterval(() => {
-    time++;
-    let min = ('0'+Math.floor(time/60)).slice(-2), sec = ('0'+(time%60)).slice(-2);
-    document.getElementById('timer').textContent = min+':'+sec;
-    if([60,300,420,600].includes(time)) saveApgar(time/60);
-  },1000);
-};
-document.getElementById('stop-timer').onclick = function() {
-  clearInterval(timer);
-};
+  <div>
+    <button type="button" onclick="startAdrenalinaCycle()">Adrenalina</button>
+    <span class="timer2" id="adrenalinaTimer">--:--</span>
+  </div>
+  <div style="margin-top:12px;">
+    <button type="button" onclick="finalizarAtendimento()">Finalizar Atendimento</button>
+    <button type="button" onclick="reiniciarAtendimento()">Reiniciar Atendimento</button>
+  </div>
+  <div style="margin-top: 12px;">
+    <button type="button" onclick="calculoPCR()">Exibir Dosagem PCR</button>
+  </div>
+  <div class="resultado" id="dosePCR"></div>
+  <h4 style="margin-top:11px;">Log de Ciclos de Massagem (2min):</h4>
+  <table class="table-log">
+    <thead><tr><th>#</th><th>Início Ciclo (Hora)</th></tr></thead>
+    <tbody id="massageLog"></tbody>
+  </table>
+  <h4>Log de Adrenalina:</h4>
+  <table class="table-log">
+    <thead><tr><th>#</th><th>Horário Aplicação</th></tr></thead>
+    <tbody id="adrenalinaLog"></tbody>
+  </table>
+</fieldset>
 
-function saveApgar(min) {
-  const fd = new FormData(document.getElementById('apgar-form'));
-  let total = 0;
-  ['fc','resp','tonus','reflexo','cor'].forEach(name=>{
-    total += +fd.get(name)||0;
-  });
-  apgarResults.push({min, total});
-  showApgarHistory();
-}
-document.getElementById('save-apgar').onclick = function() {
-  let min = Math.floor(time/60);
-  saveApgar(min);
-};
-function showApgarHistory() {
-  let html = '<b>Histórico Apgar:</b><ul>';
-  apgarResults.forEach(r=>{ html += `<li>${r.min} min: ${r.total}</li>`; });
-  html += '</ul>';
-  document.getElementById('apgar-history').innerHTML = html;
-};
-  </script>
+<!-- Seções com tabelas -->
+<div class="section">
+  <h2>Ressuscitação Cardiopulmonar</h2>
+  <table>
+    <thead>
+      <tr><th>Medicamento</th><th>Dose</th><th>Via</th><th>Prescrição Completa</th></tr>
+    </thead>
+    <tbody id="boxRessuscitacao"></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Intubação Traqueal</h2>
+  <table>
+    <thead>
+      <tr><th>Medicamento</th><th>Dose</th><th>Via</th><th>Prescrição Completa</th></tr>
+    </thead>
+    <tbody id="boxIntubacao"></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Sedação / Analgesia</h2>
+  <table>
+    <thead>
+      <tr><th>Medicamento</th><th>Dose</th><th>Via</th><th>Prescrição Completa</th></tr>
+    </thead>
+    <tbody id="boxSedacao"></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Urgências Neurológicas / Convulsão</h2>
+  <table>
+    <thead>
+      <tr><th>Medicamento</th><th>Dose</th><th>Via</th><th>Prescrição Completa</th></tr>
+    </thead>
+    <tbody id="boxUrgencias"></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Distúrbio de Ritmo</h2>
+  <table>
+    <thead>
+      <tr><th>Medicamento</th><th>Dose</th><th>Via</th><th>Prescrição Completa</th></tr>
+    </thead>
+    <tbody id="boxRitmo"></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Sedação em Bomba</h2>
+  <table>
+    <thead>
+      <tr><th>Medicamento</th><th>Dose</th><th>Via</th><th>Prescrição Completa</th></tr>
+    </thead>
+    <tbody id="boxBomba"></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Choques</h2>
+  <table>
+    <thead>
+      <tr><th>Medicamento</th><th>Dose</th><th>Via</th><th>Prescrição Completa</th></tr>
+    </thead>
+    <tbody id="boxChoques"></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Tabela de Procedimentos</h2>
+  <table>
+    <thead>
+      <tr><th>Idade</th><th>Lâmina Laringo</th><th>Tubo Traqueal</th><th>Fixação</th><th>Sonda Aspiração</th><th>Jelco</th><th>Dreno</th><th>Cateter</th><th>SVD</th></tr>
+    </thead>
+    <tbody id="boxProcedimento"></tbody>
+  </table>
+</div>
+
+<script>
+  // PCR timers and logs
+  let pcrTimerInterval = null, pcrSeconds = 0, pcrRunning = false;
+  let massageCycleInterval = null, massageCycleSeconds = 0, massageLog = [];
+  let adrenalinaInterval = null, adrenalinaSeconds = 0, adrenalinaLog = [];
+
+  function formatTime(secs) {
+    let min = String(Math.floor(secs / 60)).padStart(2, '0');
+    let sec = String(secs % 60).padStart(2, '0');
+    return `${min}:${sec}`;
+  }
+  function togglePcrTimer() {
+    if (!pcrRunning) {
+      pcrRunning = true;
+      pcrTimerInterval = setInterval(() => {
+        pcrSeconds++;
+        document.getElementById('pcrTimer').innerText = formatTime(pcrSeconds);
+      }, 1000);
+    } else {
+      pcrRunning = false;
+      clearInterval(pcrTimerInterval);
+    }
+  }
+  function startMassageCycle() {
+    clearInterval(massageCycleInterval);
+    massageCycleSeconds = 120;
+    addMassageLog();
+    updateMassageTimer();
+    massageCycleInterval = setInterval(() => {
+      massageCycleSeconds--;
+      updateMassageTimer();
+      if (massageCycleSeconds <= 0) {
+        clearInterval(massageCycleInterval);
+        document.getElementById('currentMassageTimer').innerText = "00:00";
+      }
+    }, 1000);
+  }
+  function updateMassageTimer() {
+    document.getElementById('currentMassageTimer').innerText = formatTime(massageCycleSeconds);
+  }
+  function addMassageLog() {
+    let now = new Date();
+    massageLog.push(now.toLocaleTimeString());
+    renderMassageLog();
+  }
+  function renderMassageLog() {
+    let tbody = document.getElementById('massageLog');
+    tbody.innerHTML = "";
+    massageLog.forEach((hora, idx) => {
+      let tr = document.createElement('tr');
+      tr.innerHTML = `<td>${idx + 1}</td><td>${hora}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+  function startAdrenalinaCycle() {
+    clearInterval(adrenalinaInterval);
+    adrenalinaSeconds = 0;
+    addAdrenalinaLog();
+    updateAdrenalinaTimer();
+    adrenalinaInterval = setInterval(() => {
+      adrenalinaSeconds++;
+      updateAdrenalinaTimer();
+    }, 1000);
+  }
+  function updateAdrenalinaTimer() {
+    document.getElementById('adrenalinaTimer').innerText = formatTime(adrenalinaSeconds);
+  }
+  function addAdrenalinaLog() {
+    let now = new Date();
+    adrenalinaLog.push(now.toLocaleTimeString());
+    renderAdrenalinaLog();
+  }
+  function renderAdrenalinaLog() {
+    let tbody = document.getElementById('adrenalinaLog');
+    tbody.innerHTML = "";
+    adrenalinaLog.forEach((hora, idx) => {
+      let tr = document.createElement('tr');
+      tr.innerHTML = `<td>${idx + 1}</td><td>${hora}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+  function finalizarAtendimento() {
+    pcrRunning = false;
+    clearInterval(pcrTimerInterval);
+    clearInterval(massageCycleInterval);
+    clearInterval(adrenalinaInterval);
+    alert("Atendimento finalizado. Todos os cronômetros pausados!");
+  }
+  function reiniciarAtendimento() {
+    pcrSeconds = 0;
+    massageCycleSeconds = 0;
+    adrenalinaSeconds = 0;
+    massageLog = [];
+    adrenalinaLog = [];
+    pcrRunning = false;
+    clearInterval(pcrTimerInterval);
+    clearInterval(massageCycleInterval);
+    clearInterval(adrenalinaInterval);
+    document.getElementById('pcrTimer').innerText = "00:00";
+    document.getElementById('currentMassageTimer').innerText = "--:--";
+    document.getElementById('adrenalinaTimer').innerText = "--:--";
+    document.getElementById('massageLog').innerHTML = "";
+    document.getElementById('adrenalinaLog').innerHTML = "";
+    document.getElementById('dosePCR').innerText = "";
+  }
+  function calculoPCR() {
+    alert("Função para exibir dose PCR pode ser personalizada conforme código de doses.");
+  }
+
+  // Cálculo da dose baseado na fórmula da planilha
+  function parseFormula(formula, peso){
+    if(!peso || !formula) return "--";
+    let f = formula.replace(/,/g,".").toLowerCase();
+    let m = f.match(/peso x ([0-9.]+)/);
+    if(m) return (peso * parseFloat(m[1])).toFixed(2).replace(".",",");
+    m = f.match(/peso x ([0-9.]+) x h/);
+    if(m) return (peso * parseFloat(m[10]) * 12).toFixed(2).replace(".",","); // assume 12h padrão
+    return "--";
+  }
+
+  // Dados completos dos medicamentos (conforme planilha)
+  const dadosTabelas = {
+    ressuscitacao: [
+      {nome:'Adrenalina 1:1.000 (1mg/ml) – Pediatria',dose:"0,01mg/kg - Max 1mg",via:'EV/IO',formula:'Peso x 0,1',prescricao:'Diluir 1mL em 9mL AD e administrar',complemento:' mL EV em bolus. Máx 10mL.',filtro:p=>p.idade>=1},
+      {nome:'PED',dose:'0,1mg/kg - Max 2,5mg',via:'TOT',formula:'Peso x 0,1',prescricao:'Diluir 1mL em 9mL AD e administrar',complemento:' mL no TOT.',filtro:p=>p.idade>=1},
+      {nome:'Adrenalina 1:1.000 (1mg/ml) – Neonatologia',dose:'0,01 - 0,03mg/kg ',via:'EV/IO',formula:'Peso x 0,1',prescricao:'Diluir 1mL em 9mL AD e administrar',complemento:' mL em bolus.',filtro:p=>p.idade===0},
+      {nome:'RN',dose:'0,05-0,1mg/kg ',via:'TOT',formula:'Peso x 0,5',prescricao:'Diluir 1mL em 9mL AD e administrar',complemento:' mL no TOT.',filtro:p=>p.idade===0},
+      {nome:'Soro fisiológico 0,9%',dose:'10-20mL/kg ',via:'EV/IO',formula:'Peso x 10',prescricao:'Administrar',complemento:' mL de SF0,9% EV livre.',filtro:null},
+      {nome:'Glicose 25% (0,25g/ml) – Pediatria',dose:'0,5-1g/kg',via:'EV/IO',formula:'Peso x 2',prescricao:'Diluir',complemento:' mL de SG25% em 1:1 mL de AD e administrar EV em bolus',filtro:p=>p.idade>=1},
+      {nome:'Glicose 25% (0,25g/ml) – Neonatologia',dose:'0,25g/Kg',via:'EV/IO',formula:'Peso x 1',prescricao:'Diluir',complemento:' mL de SG25% em 1:1 mL de AD e administrar EV em bolus',filtro:p=>p.idade===0},
+      {nome:'Gluconato de Cálcio 10% (9mgCa + 2/ml)',dose:'9mg/Kg - Max 3g',via:'EV/IO',formula:'Peso x 1',prescricao:'Diluir',complemento:' mL em 1:1 mL de AD e administrar EV em bolus lento',filtro:null},
+      {nome:'Bicarbonato de Sódio 8,4% 91mEq/mL)',dose:'1mEq/Kg',via:'EV/IO',formula:'Peso x 1',prescricao:'Diluir',complemento:' mL em 1:1 mL de AD e administrar EV em bolus lento',filtro:null},
+      {nome:'Atropina (0,25mg/mL)',dose:'0,02mg/Kg - Max 1mg / Min 0,1mg',via:'EV/IO',formula:'Peso x 0,08',prescricao:'Administrar',complemento:' mL EV, em bolus.',filtro:null}
+    ],
+    intubacao: [
+      {nome:'Atropina (0,25mg/mL)',dose:'0,01-0,02mg/kg - Max 1mg / Min 0,1mg',via:'EV/IO',formula:'Peso x 0,08',prescricao:'Administrar',complemento:' mL EV, em bolus.',filtro:null},
+      {nome:'Atropina (0,25mg/mL)',dose:'0,02mg/Kg ',via:'IM',formula:'Peso x 0,08',prescricao:'Administrar',complemento:' mL IM.',filtro:null},
+      {nome:'Lidocaína, cloridrato 2% (20mg/ml)',dose:'1-2mg/Kg',via:'EV/IO',formula:'Peso x 0,05',prescricao:'Administrar',complemento:' mL EV, lento.',filtro:null},
+      {nome:'Cetamina (50mg/ml)',dose:'2mg/Kg ',via:'EV/IO',formula:'Peso x 0,04',prescricao:'Administrar',complemento:' mL EV, lento - 2 minutos.',filtro:null},
+      {nome:'Cetamina (50mg/ml)',dose:'3-5mg/kg',via:'IM',formula:'Peso x 0,06',prescricao:'Administrar',complemento:' mL IM.',filtro:null},
+      {nome:'Fentanil (50mcg/mL)',dose:'2- 4mcg/mL ',via:'EV/IO',formula:'Peso x 0,04',prescricao:'Diluir',complemento:' mL em 3mL de AD, EV, lento',filtro:null},
+      {nome:'Fentanil (50mcg/mL)',dose:'2- 4mcg/mL ',via:'IM',formula:'Peso x 0,04',prescricao:'Administrar',complemento:' mL IM.',filtro:null},
+      {nome:'Midazolam (5mg/mL)',dose:'0,2-0,4mg/kg',via:'EV/IO',formula:'Peso x 0,04',prescricao:'Administrar',complemento:' mL EV lento.',filtro:null},
+      {nome:'Midazolam (5mg/mL)',dose:'0,2-0,4mg/kg',via:'IM',formula:'Peso x 0,04',prescricao:'Administrar',complemento:' mL IM.',filtro:null},
+      {nome:'Midazolam (5mg/mL)',dose:'0,2-0,4mg/kg',via:'IM/IN',formula:'Peso x 0,04',prescricao:'Administrar',complemento:' mL, IN, metade em cada narina',filtro:null},
+      {nome:'Etomidato (2mg/mL)',dose:'0,2-0,4mg/Kg - Max 20mg',via:'EV/IO',formula:'Peso x 0,1',prescricao:'Administrar',complemento:' mL EV, lento.',filtro:null},
+      {nome:'Propofol (10mg/mL)',dose:'1-3mg/kg ',via:'EV/IO',formula:'Peso x 0,1',prescricao:'Administrar',complemento:' mL EV, lento.',filtro:null},
+      {nome:'Succinilcolina, Suxametônio (20mg/mL)',dose:'1-2mg/Kg ',via:'EV/IO',formula:'Peso x 0,05',prescricao:'Administrar',complemento:' mL EV em bolus. Max 7,5mL',filtro:null},
+      {nome:'Succinilcolina, Suxametônio (20mg/mL)',dose:'2-4mg/Kg',via:'IM',formula:'Peso x 0,1',prescricao:'Administrar',complemento:' mL IM',filtro:null},
+      {nome:'Rocurônio (10mg/mL)',dose:'1-1,2mg/kg',via:'EV/IO',formula:'Peso x 0,1',prescricao:'Administrar',complemento:' mL EV, em bolus.',filtro:null},
+      {nome:'Pancurônio 2mg/mL',dose:'0,1-0,2mg/Kg',via:'EV/IO',formula:'Peso x 0,05',prescricao:'Administrar',complemento:' mL EV, em bolus.',filtro:null}
+    ],
+    sedacao: [
+      {nome:'Cetamina (50mg/ml)',dose:'0,5-2mg/Kg ',via:'EV/IO',formula:'Peso x 0,01',prescricao:'Administrar',complemento:' mL EV, lento.',filtro:null},
+      {nome:'Cetamina (50mg/ml)',dose:'3-5mg/kg',via:'IM',formula:'Peso x 0,06',prescricao:'Administrar',complemento:' mL IM.',filtro:null},
+      {nome:'Fentanil (50mcg/mL)',dose:'1-4mcg/Kg',via:'EV/IO',formula:'Peso x 0,02',prescricao:'Diluir',complemento:' mL em 3mL de AD, EV, lento',filtro:null},
+      {nome:'Fentanil (50mcg/mL)',dose:'1-4mcg/Kg',via:'IM',formula:'Peso x 0,02',prescricao:'Administrar',complemento:' mL IM.',filtro:null},
+      {nome:'Midazolam (5mg/mL)',dose:'0,05-0,1mg/Kg',via:'EV/IO',formula:'Peso x 0,01',prescricao:'Administrar',complemento:' mL EV lento.',filtro:null},
+      {nome:'Midazolam (5mg/mL)',dose:'0,1-0,2mg/Kg',via:'IM',formula:'Peso x 0,02',prescricao:'Administrar',complemento:' mL IM.',filtro:null},
+      {nome:'Midazolam (5mg/mL)',dose:'0,2-0,4mg/Kg',via:'IN',formula:'Peso x 0,04',prescricao:'Administrar',complemento:' mL, IN, metade em cada narina',filtro:null},
+      {nome:'Morfina (10mg/mL)',dose:'0,05-0,1mg/kg ',via:'EV/IO',formula:'Peso x 0,005',prescricao:'Diluir 1ml em 9mL de AD e administrar',complemento:' mL EV lento.',filtro:null}
+    ],
+    urgencias: [
+      {nome:'Diazepam (5mg/mL)',dose:'0,2-0,5mg/Kg - Max 5mg (< 5a) / 10mg (> 5a)',via:'EV',formula:'Peso x 0,04',prescricao:'Administrar',complemento:' mL EV, lento.',filtro:null},
+      {nome:'Midazolam (5mg/mL)',dose:'0,2-0,5mg/Kg',via:'EV/IO',formula:'Peso x 0,04',prescricao:'Administrar',complemento:' mL EV, lento.',filtro:null},
+      {nome:'Midazolam (5mg/mL)',dose:'0,2-0,5mg/Kg',via:'IN',formula:'Peso x 0,04',prescricao:'Administrar',complemento:' mL, IN, metade em cada narina',filtro:null},
+      {nome:'Fenobarbital (100mg/mL)',dose:'20-30mg/Kg',via:'EV',formula:'Peso x 0,2',prescricao:'Diluir',complemento:' mL em 1:1ml SF0,9%, EV lento.',filtro:null},
+      {nome:'Fenobarbital (100mg/mL)',dose:'20-30mg/Kg',via:'IM',formula:'Peso x 0,2',prescricao:'Administrar',complemento:' mL IM.',filtro:null},
+      {nome:'Fenitoína (50mg/mL)',dose:'20-30mg/Kg',via:'EV',formula:'Peso x 0,4',prescricao:'Diluir',complemento:' mL em 1:1mL de SF0,9%, EV lento',filtro:null},
+      {nome:'Tiopental (50mg/mL)',dose:'1-3mg/Kg',via:'EV',formula:'Peso x 0,02',prescricao:'Diluir',complemento:' mL em 10mL de SG5%, EV, lento.',filtro:null},
+      {nome:'Propofol 10mg/mL',dose:'1mg/Kg',via:'EV',formula:'Peso x 0,1',prescricao:'Administrar',complemento:' mL EV, lento.',filtro:null},
+      {nome:'Manitol 20% (200mg/mL)',dose:'0,5-1g/Kg',via:'EV',formula:'Peso x 2,5',prescricao:'Administrar',complemento:' mL EV, lento.',filtro:null}
+    ],
+    ritmo: [
+      {nome:'Desfibrilação (NÃO SINCRONIZAR)',dose:'2J/Kg – Max 10J/kg',via:'',formula:'Peso x 2',prescricao:'Aplicar',complemento:' Joules.',filtro:null},
+      {nome:'Cardioversão (SINCRONIZAR)',dose:'0,5 - 1J/Kg',via:'',formula:'Peso x 0,5',prescricao:'Aplicar',complemento:' Joules.',filtro:null},
+      {nome:'Adenosina (3mg/mL)',dose:'0,1mg/Kg - Max 6mg',via:'EV/IO',formula:'Peso x 0,03',prescricao:'Administrar',complemento:' mL de Adenosina EV em bolus seguido de flush de SF0,9%. Max 2ml (1ªdose) / 4ml (2ª dose).',filtro:null},
+      {nome:'Amiodarona (50mg/mL)',dose:'5mg/Kg - Max 300mg',via:'EV/IO',formula:'Peso x 0,1',prescricao:'Diluir',complemento:' mL de Amiodarona em 1:20mL de SG5% e administrar EV lento - 10 minutos. Máx 6mL.',filtro:null},
+      {nome:'Lidocaína, cloridrato 2% (20mg/mL)',dose:'1mg/Kg',via:'EV/IO',formula:'Peso x 0,05',prescricao:'Administrar',complemento:' mL de Lidocaína 1% EV, lento.',filtro:null},
+      {nome:'Sulfato de Magnésio 50% (500mg/mL)',dose:'25-50mg/Kg - Max 2g',via:'EV',formula:'Peso x 0,05',prescricao:'Diluir',complemento:' mL de Sulfato de Magnésio 50% em 10mL de SG5% e administrar EV, lento. Máx 4ml.',filtro:null}
+    ],
+    bomba: [
+      {nome:'Midazolam (5mg/mL)',dose:'< 32sem 0,03mgkg/h',via:'EV',formula:'Peso x 0,006 x h',prescricao:'Diluir',complemento:' mL + 60ml SF0,9%,  (5ml/h 12h)',filtro:null},
+      {nome:'Midazolam (5mg/mL)',dose:'1 a 6m 0,06mg/kg/h',via:'EV',formula:'Peso x 0,012 x h',prescricao:'Diluir',complemento:' mL + 60ml SF0,9%,  (5ml/h 12h)',filtro:null},
+      {nome:'Midazolam (5mg/mL)',dose:'> 6m 0,06-0,12mg/kg/h',via:'EV',formula:'Peso x 0,012 x h',prescricao:'Diluir',complemento:' mL + 60ml SF0,9%,  (5ml/h 12h)',filtro:null},
+      {nome:'Fentanil (50mcg/mL)',dose:'RN 0,5ug/Kg/h',via:'EV',formula:'Peso x 0,01',prescricao:'Diluir',complemento:' mL + 60ml SF0,9%,  (5ml/h 12h)',filtro:null},
+      {nome:'Fentanil (50mcg/mL)',dose:'> 1a 1-3ug/Kg/h',via:'EV',formula:'Peso x 0,02',prescricao:'Diluir',complemento:' mL + 60ml SF0,9%,  (5ml/h 12h)',filtro:null}
+    ],
+    choques: [
+      {nome:'Noraepinefrina (1mg/mL)',dose:'0,1mcg/kg/min. Máx: 2mcg',via:'EV',formula:'Peso x 0,0001 x 60 x h',prescricao:'Diluir',complemento:' mL + 6mL SG5%,  (0,5ml/h 12h)',filtro:null},
+      {nome:'Dobutamina (12,5mg/mL)',dose:'2mcg/kg/min - Max 20mcg',via:'EV',formula:'Peso x 0,00016 x 60 x h',prescricao:'Diluir',complemento:' mL + 12mL SG5%,  (1ml/h 12h)',filtro:null},
+      {nome:'Epinefrina (1mg/ml)',dose:'0,1mcg/kg/min - Max 1mcg',via:'EV',formula:'Peso x 0,0001 x 60 x h',prescricao:'Diluir',complemento:' mL + 6mL SF0,9%,  (0,5ml/h 12h)',filtro:null}
+    ]
+  };
+
+  const dadosProced = [
+    {idade:"RNPT",lamina:"Reta 00 - 0",tubo:"2.5",fixacao:"7 a 8",sonda:"4 ou 6",jelco:"20",dreno:"8 ou 10",cateter:"3F/22G",svd:"4 ou 6"},
+    {idade:"RNT",lamina:"Reta 0",tubo:"3",fixacao:"9 a 11",sonda:"6",jelco:"18",dreno:"10 ou 12",cateter:"3F/22G",svd:"6 ou 8"},
+    {idade:"6-11 meses",lamina:"Reta 1",tubo:"3.5",fixacao:"9 a 12",sonda:"6",jelco:"18",dreno:"10 ou 12",cateter:"4F/20-22G",svd:"8 ou 10"},
+    {idade:"1 ano",lamina:"Reta 1-2",tubo:"3,5-4",fixacao:"11 a 13,5",sonda:"6 ou 8",jelco:"18",dreno:"16 - 20",cateter:"4F/20-22G",svd:"8 ou 10"},
+    {idade:"2-3 anos",lamina:"Reta/curva 2",tubo:"4-4,5",fixacao:"12 a 13,5",sonda:"8",jelco:"18",dreno:"16- 20",cateter:"5F/18-20G",svd:"8 ou 10"},
+    {idade:"4-5 anos",lamina:"Reta/curva 2",tubo:"4.5",fixacao:"13,5 a 15",sonda:"8",jelco:"16",dreno:"20 - 28",cateter:"5F/18G",svd:"8 ou 10"},
+    {idade:"6-7 anos",lamina:"Reta/curva 2",tubo:"5",fixacao:"15 a 16,5",sonda:"10",jelco:"16",dreno:"20 - 28",cateter:"5F/18G",svd:"10 ou 12"},
+    {idade:"8-9 anos",lamina:"Curva 2-3",tubo:"5.5",fixacao:"16,5 a 18",sonda:"10",jelco:"14",dreno:"28 - 32",cateter:"6F/18-16G",svd:"10 ou 12"},
+    {idade:"10-11 anos",lamina:"Curva 2-3",tubo:"6",fixacao:"18 a 19,5",sonda:"12",jelco:"14",dreno:"28 - 32",cateter:"6F/18-16G",svd:"10 ou 12"},
+    {idade:"12 anos",lamina:"Curva 3",tubo:"6.5",fixacao:"19,5 a 21",sonda:"12",jelco:"14",dreno:"28 - 32",cateter:"6F/16G",svd:"10 ou 12"},
+    {idade:">12 anos",lamina:"Curva 3",tubo:"7-7,5",fixacao:"21 a 24",sonda:"12",jelco:"14",dreno:"32 - 38",cateter:"6F/14-16G",svd:"14"}
+  ];
+
+  function atualizaTabelas() {
+    let idadeRaw = document.getElementById("inputIdade").value;
+    let pesoRaw = document.getElementById("inputPeso").value;
+    let idade = idadeRaw ? parseInt(idadeRaw) : null;
+    let peso = pesoRaw ? parseFloat(pesoRaw) : null;
+    if (!peso || peso <= 0) {
+      if (idade === 0) peso = 3.5;
+      else if (idade !== null) peso = idade * 2 + 8;
+    }
+    document.getElementById("msgPeso").textContent =
+      peso > 0 ? `Peso usado: ${peso.toFixed(2)} kg` : "Informe idade ou peso para cálculo";
+    [
+      "ressuscitacao",
+      "intubacao",
+      "sedacao",
+      "urgencias",
+      "ritmo",
+      "bomba",
+      "choques",
+    ].forEach((sec) => {
+      let tab = dadosTabelas[sec],
+        rows = "";
+      if (tab) {
+        tab.forEach((med) => {
+          if (med.filtro && !med.filtro({ idade })) return;
+          let val = parseFormula(med.formula, peso);
+          rows += `<tr><td>${med.nome}</td><td>${med.dose}</td><td>${med.via}</td><td>${med.prescricao} ${val} ${med.complemento ||
+            ""}</td></tr>`;
+        });
+      }
+      document.getElementById(`box${sec.charAt(0).toUpperCase() + sec.slice(1)}`).innerHTML = rows;
+    });
+
+    let procRows = "";
+    dadosProced.forEach((p) => {
+      let exibe = false;
+      if (idade === 0 && (p.idade === "RNPT" || p.idade === "RNT")) exibe = true;
+      else if (idade >= 13 && p.idade === ">12 anos") exibe = true;
+      else if (p.idade.indexOf("-") >= 0) {
+        let [min, max] = p.idade.split("-").map((x) => parseInt(x));
+        if (!isNaN(min) && (!max || (idade >= min && idade <= max))) exibe = true;
+      } else {
+        let val = parseInt(p.idade);
+        if (val === idade) exibe = true;
+      }
+      if (exibe) {
+        procRows += `<tr class="highlight"><td>${p.idade}</td><td>${p.lamina}</td><td>${p.tubo}</td><td>${p.fixacao}</td><td>${p.sonda}</td><td>${p.jelco}</td><td>${p.dreno}</td><td>${p.cateter}</td><td>${p.svd}</td></tr>`;
+      }
+    });
+    document.getElementById("boxProcedimento").innerHTML = procRows;
+  }
+
+  window.onload = atualizaTabelas;
+</script>
+
 </body>
 </html>
+
