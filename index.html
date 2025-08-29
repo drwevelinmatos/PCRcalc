@@ -116,7 +116,7 @@
   <img src="IMG_4625.png" alt="Logo Dr. Wevelin Matos" />
 </header>
 
-<h1>Emergência Pediátrica - Calculadora de Doses</h1>
+<h1>Emergência Pediátrica</h1>
 
 <label for="inputIdade">Idade (anos):</label>
 <input type="number" id="inputIdade" min="0" max="18" step="1" oninput="atualizaTabelas()">
@@ -126,7 +126,7 @@
 
 <!-- Sessão PCR -->
 <fieldset>
-  <legend>Parada Cardiorrespiratória (PCR) - Cronômetros & Doses</legend>
+  <legend>Parada Cardiorrespiratória (PCR)</legend>
   <div class="pcr-row">
     <div class="pcr-left">
       <button onclick="togglePcrTimer()">Start / Stop PCR</button>
@@ -135,7 +135,7 @@
   </div>
   <div class="pcr-row">
     <div class="pcr-left">
-      <button onclick="startMassageCycle()">Start Novo Ciclo Massagem</button>
+      <button onclick="startMassageCycle()">Massagem</button>
       <span class="timer2" id="currentMassageTimer">--:--</span>
     </div>
   </div>
@@ -147,19 +147,19 @@
   </div>
   <div class="pcr-row">
     <div class="pcr-left">
-      <button onclick="finalizarAtendimento()">Finalizar Atendimento</button>
+      <button onclick="finalizarAtendimento()">Finalizar</button>
     </div>
     <div class="pcr-right">
-      <button onclick="reiniciarAtendimento()">Reiniciar Atendimento</button>
+      <button onclick="reiniciarAtendimento()">Reiniciar</button>
     </div>
   </div>
   <div class="resultado" id="dosePCR"></div>
-  <h3>Log de Ciclos de Massagem (2min):</h3>
+  <h3>Ciclos de Massagem (2min):</h3>
   <table>
     <thead><tr><th>#</th><th>Início Ciclo (Hora)</th></tr></thead>
     <tbody id="massageLog"></tbody>
   </table>
-  <h3>Log de Adrenalina:</h3>
+  <h3>Ciclos de Adrenalina:</h3>
   <table>
     <thead><tr><th>#</th><th>Horário Aplicação</th></tr></thead>
     <tbody id="adrenalinaLog"></tbody>
@@ -267,10 +267,6 @@
       <th>Tubo Traqueal</th>
       <th>Fixação</th>
       <th>Sonda Aspiração</th>
-      <th>Jelco</th>
-      <th>Dreno</th>
-      <th>Cateter</th>
-      <th>SVD</th>
     </tr>
   </thead>
   <tbody id="boxProcedimento"></tbody>
@@ -761,37 +757,37 @@ const dadosTabelas = {
 
     const dadosProced = [
   {idade:"RNPT", lamina:"Reta 00 - 0", tubo:"2.5", fixacao:"7 a 8",
-   sonda:"4 ou 6", jelco:"20", dreno:"8 ou 10", cateter:"3F/22G", svd:"4 ou 6"},
+   sonda:"4 ou 6"},
 
   {idade:"RNT", lamina:"Reta 0", tubo:"3", fixacao:"9 a 11",
-   sonda:"6", jelco:"18", dreno:"10 ou 12", cateter:"3F/22G", svd:"6 ou 8"},
+   sonda:"6"},
 
   {idade:"6-11 meses", lamina:"Reta 1", tubo:"3.5", fixacao:"9 a 12",
-   sonda:"6", jelco:"18", dreno:"10 ou 12", cateter:"4F/20-22G", svd:"8 ou 10"},
+   sonda:"6"},
 
   {idade:"1 ano", lamina:"Reta 1-2", tubo:"3,5-4", fixacao:"11 a 13,5",
-   sonda:"6 ou 8", jelco:"18", dreno:"16 - 20", cateter:"4F/20-22G", svd:"8 ou 10"},
+   sonda:"6 ou 8"},
 
   {idade:"2-3 anos", lamina:"Reta/curva 2", tubo:"4-4,5", fixacao:"12 a 13,5",
-   sonda:"8", jelco:"18", dreno:"16-20", cateter:"5F/18-20G", svd:"8 ou 10"},
+   sonda:"8"},
 
   {idade:"4-5 anos", lamina:"Reta/curva 2", tubo:"4.5", fixacao:"13,5 a 15",
-   sonda:"8", jelco:"16", dreno:"20 - 28", cateter:"5F/18G", svd:"8 ou 10"},
+   sonda:"8"},
 
   {idade:"6-7 anos", lamina:"Reta/curva 2", tubo:"5", fixacao:"15 a 16,5",
-   sonda:"10", jelco:"16", dreno:"20 - 28", cateter:"5F/18G", svd:"10 ou 12"},
+   sonda:"10"},
 
   {idade:"8-9 anos", lamina:"Curva 2-3", tubo:"5.5", fixacao:"16,5 a 18",
-   sonda:"10", jelco:"14", dreno:"28 - 32", cateter:"6F/18-16G", svd:"10 ou 12"},
+   sonda:"10"},
 
   {idade:"10-11 anos", lamina:"Curva 2-3", tubo:"6", fixacao:"18 a 19,5",
-   sonda:"12", jelco:"14", dreno:"28 - 32", cateter:"6F/18-16G", svd:"10 ou 12"},
+   sonda:"12"},
 
   {idade:"12 anos", lamina:"Curva 3", tubo:"6.5", fixacao:"19,5 a 21",
-   sonda:"12", jelco:"14", dreno:"28 - 32", cateter:"6F/16G", svd:"10 ou 12"},
+   sonda:"12"},
 
   {idade:">12 anos", lamina:"Curva 3", tubo:"7-7,5", fixacao:"21 a 24",
-   sonda:"12", jelco:"14", dreno:"32 - 38", cateter:"6F/14-16G", svd:"14"}
+   sonda:"12"}
 ];
 
     /* ================== FUNÇÕES PCR ================== */
