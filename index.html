@@ -92,9 +92,9 @@
       font-weight:bold;
       font-family:monospace;
       font-size:1.4em;
-      padding:6px 15px;
-      border-radius:8px;
-      min-width:80px;
+      padding:12px 26px;
+      border-radius:6px;
+      min-width:160px;
       text-align:center;
     }
     .timer{background:rgb(40,90,129);color:#fff;}
@@ -926,7 +926,7 @@ function atualizaTabelas(){
       if(val===idade)exibe=true;
     }
     if(exibe){
-      procRows+=`<tr class="highlight"><td>${p.idade}</td><td>${p.lamina}</td><td>${p.tubo}</td><td>${p.fixacao}</td><td>${p.sonda}</td><td>${p.jelco}</td><td>${p.dreno}</td><td>${p.cateter}</td><td>${p.svd}</td></tr>`;
+      procRows+=`<tr class="highlight"><td>${p.idade}</td><td>${p.lamina}</td><td>${p.tubo}</td><td>${p.fixacao}</td><td>${p.sonda}</td></tr>`;
     }
   });
   document.getElementById("boxProcedimento").innerHTML=procRows;
